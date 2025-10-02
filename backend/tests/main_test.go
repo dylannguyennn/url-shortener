@@ -7,12 +7,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/dylannguyennn/url-shortener/database"
+	"github.com/dylannguyennn/url-shortener/router"
 )
 
 func TestHealthEndpoint(t *testing.T) {
-	_ = database.Connect()
-	router := main.setupRouter()
+	router := router.SetupRouter()
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/health", nil)
@@ -24,7 +23,7 @@ func TestHealthEndpoint(t *testing.T) {
 }
 
 func TestShortenEndpoint(t *testing.T) {
-	router := setupRouter()
+	router := router.SetupRouter()
 
 	body := map[string]string{"url": "https://github.com"}
 	jsonBody, _ := json.Marshal(body)
