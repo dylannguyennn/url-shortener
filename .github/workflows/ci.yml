@@ -1,0 +1,51 @@
+name: URL Shortener CI
+
+on:
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "main" ]
+
+jobs:
+    backend-build:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: backend
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version: '1.23'
+            
+            - name: Install dependencies
+              run: go mod tidy
+
+            - name: Run build
+              run: go build ./...
+
+    backend-test:
+        runs-on: ubuntu-latest
+        needs: backend-build
+        defaults:
+            run:
+                working-directory: backend
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version: '1.23'
+
+            - name: Install dependencies
+              run: go mod tidy
+              
+            - name: Run tests
+              run: go test -v ./...
