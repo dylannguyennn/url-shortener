@@ -65,5 +65,5 @@ jobs:
               
             - name: Run tests
               env: 
-                DATABASE_URL: postgres://postgres:postgres@localhost:5432/url_shortener_test?sslmode=disable
+                DB_CONNECTION_STRING: postgres://postgres:postgres@localhost:5432/url_shortener_test?sslmode=disable
               run: go test -v ./...
