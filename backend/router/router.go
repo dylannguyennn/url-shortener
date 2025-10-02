@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func setupRouter() *gin.Engine {
+func SetupRouter() *gin.Engine {
 	// Gin router with default middleware
 	r := gin.Default()
 

@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/dylannguyennn/url-shortener/database"
+	"github.com/dylannguyennn/url-shortener/router"
 )
 
 func main() {
@@ -14,7 +15,7 @@ func main() {
 	}
 
 	// Initialize router
-	r := router.setupRouter()
+	r := router.SetupRouter()
 
 	fmt.Println("Server starting...")
 	r.Run(":8080")
