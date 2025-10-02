@@ -2,6 +2,7 @@ package router
 
 import (
 	"database/sql"
+	"log"
 	"net/http"
 
 	"github.com/dylannguyennn/url-shortener/database"
@@ -10,6 +11,11 @@ import (
 )
 
 func SetupRouter() *gin.Engine {
+	// Connect to DB
+	if err := database.Connect(); err != nil {
+		log.Fatalf("Database connection failed: %v", err)
+	}
+
 	// Gin router with default middleware
 	r := gin.Default()
 
@@ -47,7 +53,7 @@ func SetupRouter() *gin.Engine {
 
 		// Returns shortened URL
 		c.JSON(http.StatusOK, gin.H{
-			"short_url": "https://localhost:8080/" + shortID,
+			"short_url": "http://localhost:8080/" + shortID,
 			"original":  req.URL,
 		})
 	})
