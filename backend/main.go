@@ -1,11 +1,12 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/dylannguyennn/url-shortener/backend/database"
+	"github.com/dylannguyennn/url-shortener/database"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -58,11 +59,30 @@ func main() {
 		})
 	})
 
+	// GET
+	// URL redirection
 	r.GET("/:shortID", func(c *gin.Context) {
 		shortID := c.Param("shortID")
-		c.JSON(http.StatusOK, gin.H{
-			"shortID": shortID,
-		})
+
+		// Looks up original_url using short_id
+		row := database.DB.QueryRow(
+			"SELECT original_url FROM urls WHERE short_id = ?",
+			shortID,
+		)
+
+		var original string
+		err := row.Scan(&original)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				c.JSON(http.StatusNotFound, gin.H{"error": "URL not found"})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
+			}
+			return
+		}
+
+		// Redirects to original URL
+		c.Redirect(http.StatusMovedPermanently, original)
 	})
 
 	fmt.Println("Server starting...")
