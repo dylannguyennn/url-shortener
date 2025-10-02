@@ -25,7 +25,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
 
-	// GET
+	// POST
 	// Creates shortened URL
 	r.POST("/shorten", func(c *gin.Context) {
 		// Struct for parsing and validating URL
@@ -54,7 +54,7 @@ func main() {
 
 		// Returns shortened URL
 		c.JSON(http.StatusOK, gin.H{
-			"short_url": "https://localhost:8080" + shortID,
+			"short_url": "https://localhost:8080/" + shortID,
 			"original":  req.URL,
 		})
 	})
