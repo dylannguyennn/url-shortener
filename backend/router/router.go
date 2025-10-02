@@ -42,7 +42,7 @@ func SetupRouter() *gin.Engine {
 
 		// Inserts shortID and URL into short_id and original_url in DB
 		_, err := database.DB.Exec(
-			"INSERT INTO urls (short_id, original_url) VALUES (?, ?)",
+			"INSERT INTO urls (short_id, original_url) VALUES ($1, $2)",
 			shortID, req.URL,
 		)
 
@@ -65,7 +65,7 @@ func SetupRouter() *gin.Engine {
 
 		// Looks up original_url using short_id
 		row := database.DB.QueryRow(
-			"SELECT original_url FROM urls WHERE short_id = ?",
+			"SELECT original_url FROM urls WHERE short_id = $1",
 			shortID,
 		)
 
